@@ -1,4 +1,4 @@
-package com.mindease.enum;
+package com.mindease.enums;
 
 public enum RoleEnum {
 
