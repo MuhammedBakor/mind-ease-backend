@@ -33,4 +33,10 @@ public class UserEntity {
     
     @Enumerated(EnumType.STRING)
     private RoleEnum role;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    List<ReminderEntity> reminderEntity = new ArrayList();
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    List<PasswordResetEntity> passwordResetEntity = new ArrayList();
 }
