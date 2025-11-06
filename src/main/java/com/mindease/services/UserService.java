@@ -15,7 +15,7 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public void updateProfile(UserDTO userReq) {
+    public UserDTO updateProfile(UserDTO userReq) {
         if (userReq == null) {
             throw new IllegalArgumentException("No update information provided");
         }
@@ -36,5 +36,17 @@ public class UserService {
         if (userReq.date_of_birth() != null) user.setDate_of_birth(userReq.date_of_birth());
        
         userRepository.save(user);
+
+       return new UserDTO(
+        user.getId(),
+        user.getFirstName(),
+        user.getLastName(),
+        user.getEmail(),
+        user.getSchoolName(),
+        user.getEducationalLevel(),
+        user.getGender(),
+        user.getDate_of_birth(),
+        user.getRole()
+        );
     }
 }
