@@ -16,7 +16,7 @@ public class UserController {
     }
 
     @PutMapping("/update-profile")
-    public ResponseEntity<Object> updateProfile(RequestBody UserDTO userReq) {
+    public ResponseEntity<UserDTO> updateProfile(RequestBody UserDTO userReq) {
         UserDTO updatedProfile = userService.updateProfile(userReq);
         return ResponseEntity
                .ok(updatedProfile);
