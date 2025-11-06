@@ -26,10 +26,11 @@ public class UserService {
 
     // confirm if user exists in DB
     UserEntity user = userRepository
-                     .findByEmail(email)
+                     .findByEmail(email)  
                      .orElseThrow(() -> new Exception("user not found in"));
 
-    if (userReq.getFirstName != null){
+   // updating user entity with request data 
+       if (userReq.getFirstName != null){
         userRepository.save(user.setFirstName(userReq.getFirstName());    
    }
 
