@@ -13,7 +13,6 @@ import java.util.UUID;
 
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 public class UserEntity implements UserDetails {
@@ -28,7 +27,7 @@ public class UserEntity implements UserDetails {
     @Column(nullable = false)
     private String lastName;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
