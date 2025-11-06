@@ -7,12 +7,10 @@ import java.util.UUID;
 
 @Entity
 @NoArgsConstructor
-@AllArgsConstructor
 @Getter
 @Setter
 @Table(name = "reminders")
 public class ReminderEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
@@ -21,6 +19,12 @@ public class ReminderEntity {
 
     private LocalDateTime setDateTime;   // when the reminder was created
     private LocalDateTime dueDateTime;   // when it should trigger
+
+    public ReminderEntity(String notes, LocalDateTime setDateTime, LocalDateTime dueDateTime) {
+    this.notes = notes;
+    this.setDateTime = setDateTime;
+    this.dueDateTime = dueDateTime;
+   }
 
 
 }
