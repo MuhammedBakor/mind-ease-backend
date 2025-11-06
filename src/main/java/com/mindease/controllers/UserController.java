@@ -15,8 +15,11 @@ public class UserController {
     }
 
     @PutMapping("/update-profile")
-    public ResponseEntity<?> updateProfile() {
-        return null;
+    public ResponseEntity<?> updateProfile(RequestBody UserDTO userReq) {
+        userService.updateProfile(userReq);
+        return ResponseEntity
+               .noContent
+               .Build();
     }
 
     @PutMapping("/change-password")
