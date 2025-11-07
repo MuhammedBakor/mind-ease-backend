@@ -6,6 +6,8 @@ import com.mindease.DTO.UserDTO;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+
+
 @Service
 public class UserService {
 
@@ -15,6 +17,14 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
+/*
+* Service for handling user's profilei info update
+* for and by authenticated users
+*   |  |
+*  \    /
+*   \  /
+*    \/
+*/
     public UserDTO updateProfile(UserDTO userReq) {
         if (userReq == null) {
             throw new IllegalArgumentException("No update information provided");
@@ -49,4 +59,35 @@ public class UserService {
         user.getRole()
         );
     }
+
+/*
+* Service for handling change of passwords
+* for authenticated users
+*   |  |
+*  \    /
+*   \  /
+*    \/
+*/
+    @Transactional
+public void changePassword(ChangePasswordDTO passwordReq) {
+    // Validate for empty request
+    if (passwordReq == null) {
+        throw new IllegalArgumentException("Reset password information cannot be empty");
+    }
+   
+    // Get current user details
+    String email = SecurityContextHolder.getContext().getAuthentication().getName();
+    UserEntity user = userRepository
+            .findByEmail(email)
+            .orElseThrow(() -> new RuntimeException("User not found in DB"));
+
+    // Compare old password before changing
+    if (bcrypt.matches(passwordReq.oldPassword(), user.getPassword())) {
+        user.setPassword(bcrypt.encode(passwordReq.newPassword()));
+        userRepository.save(user);
+    } else {
+        throw new IllegalArgumentException("Enter correct old password");
+    }
+}
+
 }
