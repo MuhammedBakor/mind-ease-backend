@@ -1,2 +1,7 @@
-public record ChangePasswordDTO(String oldPassword, String newPassword)
-{}
+package com.mindease.DTO;
+
+public record ChangePasswordDTO(
+  String oldPassword, 
+  String newPassword
+){  
+}
