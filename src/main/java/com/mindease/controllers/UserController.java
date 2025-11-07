@@ -23,8 +23,11 @@ public class UserController {
     }
 
     @PutMapping("/change-password")
-    public ResponseEntity<?> changePassword() {
-        return null;
+    public ResponseEntity<?> changePassword(@RequestBody ChangePasswordDTO passwordReq) {
+        userService.changePassword(passwordReq);
+        return ResponseEntity
+              .noContent()
+              .build();
     }
 
     @PutMapping("/reset-password")
