@@ -3,6 +3,7 @@ package com.mindease.services;
 import com.mindease.entities.UserEntity;
 import com.mindease.repositories.UserRepository;
 import com.mindease.DTO.UserDTO;
+import com.mindease.DTO.ChangePasswordDTO;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
