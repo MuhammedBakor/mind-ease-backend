@@ -1,5 +1,6 @@
 package com.mindease.services;
 
+import jakarta.transaction.Transactional;
 import com.mindease.entities.UserEntity;
 import com.mindease.repositories.UserRepository;
 import com.mindease.DTO.UserDTO;
