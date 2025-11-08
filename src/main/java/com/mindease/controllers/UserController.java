@@ -1,5 +1,6 @@
 package com.mindease.controllers;
 
+import com.mindease.DTO.ChangePasswordDTO;
 import com.mindease.services.UserService;
 import com.mindease.DTO.UserDTO;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +17,7 @@ public class UserController {
     }
 
     @PutMapping("/update-profile")
-    public ResponseEntity<UserDTO> updateProfile(RequestBody UserDTO userReq) {
+    public ResponseEntity<UserDTO> updateProfile(@RequestBody UserDTO userReq) {
         UserDTO updatedProfile = userService.updateProfile(userReq);
         return ResponseEntity
                .ok(updatedProfile);

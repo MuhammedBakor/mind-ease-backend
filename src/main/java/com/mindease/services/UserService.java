@@ -1,14 +1,13 @@
 package com.mindease.services;
 
-import jakarta.transaction.Transactional;
+import com.mindease.DTO.ChangePasswordDTO;
+import com.mindease.DTO.UserDTO;
 import com.mindease.entities.UserEntity;
 import com.mindease.repositories.UserRepository;
-import com.mindease.DTO.UserDTO;
-import com.mindease.DTO.ChangePasswordDTO;
+import jakarta.transaction.Transactional;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Service;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
+import org.springframework.stereotype.Service;
 
 
 @Service
@@ -45,6 +44,7 @@ public class UserService {
         // updating non-null fields
         if (userReq.firstName() != null) user.setFirstName(userReq.firstName());
         if (userReq.lastName() != null) user.setLastName(userReq.lastName());
+        if (userReq.email() != null) user.setEmail(userReq.email());
         if (userReq.schoolName() != null) user.setSchoolName(userReq.schoolName());
         if (userReq.educationalLevel() != null) user.setEducationalLevel(userReq.educationalLevel());
         if (userReq.gender() != null) user.setGender(userReq.gender());
@@ -75,24 +75,24 @@ public class UserService {
 */
     @Transactional
 public void changePassword(ChangePasswordDTO passwordReq) {
-    // Validate for empty request
-    if (passwordReq == null) {
-        throw new IllegalArgumentException("Reset password information cannot be empty");
-    }
-   
-    // Get current user details
-    String email = SecurityContextHolder.getContext().getAuthentication().getName();
-    UserEntity user = userRepository
-            .findByEmail(email)
-            .orElseThrow(() -> new RuntimeException("User not found in DB"));
+        // Validate for empty request
+        if (passwordReq == null) {
+            throw new IllegalArgumentException("Reset password information cannot be empty");
+        }
 
-    // Compare old password before changing
-    if (passwordEncoder.matches(passwordReq.oldPassword(), user.getPassword())) {
-        user.setPassword(passwordEncoder.encode(passwordReq.newPassword()));
-        userRepository.save(user);
-    } else {
-        throw new IllegalArgumentException("Enter correct old password");
+        // Get current user details
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserEntity user = userRepository
+                .findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found in DB"));
+
+        // Compare old password before changing
+        if (passwordEncoder.matches(passwordReq.oldPassword(), user.getPassword())) {
+            user.setPassword(passwordEncoder.encode(passwordReq.newPassword()));
+            userRepository.save(user);
+        } else {
+            throw new IllegalArgumentException("Enter correct old password");
+        }
     }
-}
 
 }
