@@ -6,6 +6,7 @@ import com.mindease.DTO.UserDTO;
 import com.mindease.DTO.ChangePasswordDTO;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 
@@ -13,9 +14,11 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
 /*
@@ -83,8 +86,8 @@ public void changePassword(ChangePasswordDTO passwordReq) {
             .orElseThrow(() -> new RuntimeException("User not found in DB"));
 
     // Compare old password before changing
-    if (bcrypt.matches(passwordReq.oldPassword(), user.getPassword())) {
-        user.setPassword(bcrypt.encode(passwordReq.newPassword()));
+    if (passwordEncoder.matches(passwordReq.oldPassword(), user.getPassword())) {
+        user.setPassword(passwordEncoder.encode(passwordReq.newPassword()));
         userRepository.save(user);
     } else {
         throw new IllegalArgumentException("Enter correct old password");
