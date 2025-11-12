@@ -2,12 +2,19 @@ package com.mindease.services;
 
 import com.mindease.DTO.ChangePasswordDTO;
 import com.mindease.DTO.UserDTO;
+import com.mindease.entities.ReminderEntity;
 import com.mindease.entities.UserEntity;
+import com.mindease.repositories.ReminderRepository;
 import com.mindease.repositories.UserRepository;
 import jakarta.transaction.Transactional;
+import org.quartz.SchedulerException;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Service
@@ -16,9 +23,16 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    private final ReminderRepository reminderRepository;
+    private final EmailService emailService;
+    private final ReminderSchedulerService reminderSchedulerService;
+
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, ReminderRepository reminderRepository, EmailService emailService, ReminderSchedulerService reminderSchedulerService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.reminderRepository = reminderRepository;
+        this.emailService = emailService;
+        this.reminderSchedulerService = reminderSchedulerService;
     }
 
 /*
@@ -93,6 +107,31 @@ public void changePassword(ChangePasswordDTO passwordReq) {
         } else {
             throw new IllegalArgumentException("Enter correct old password");
         }
+    }
+
+    // Create a reminder for a user
+    public ReminderEntity createReminder(String notes, LocalDateTime dueDateTime, UserEntity user) {
+        ReminderEntity reminder = new ReminderEntity();
+        reminder.setNotes(notes);
+        reminder.setSetDateTime(LocalDateTime.now());
+        reminder.setDueDateTime(dueDateTime);
+        reminder.setUser(user);
+        reminder.setSent(false);
+
+        ReminderEntity savedReminder = reminderRepository.save(reminder);
+
+        try {
+            reminderSchedulerService.scheduleReminder(savedReminder);
+        } catch (SchedulerException e) {
+            e.printStackTrace();
+        }
+
+        return savedReminder;
+    }
+
+    // To get all reminders for a user
+    public List<ReminderEntity> getReminders(UserEntity user) {
+        return reminderRepository.findByUser(user);
     }
 
 }

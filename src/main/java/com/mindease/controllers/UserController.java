@@ -1,10 +1,16 @@
 package com.mindease.controllers;
 
 import com.mindease.DTO.ChangePasswordDTO;
+import com.mindease.entities.ReminderEntity;
+import com.mindease.entities.UserEntity;
+import com.mindease.requests.ReminderRequest;
 import com.mindease.services.UserService;
 import com.mindease.DTO.UserDTO;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/user")
@@ -42,13 +48,23 @@ public class UserController {
     }
 
     @PostMapping("/set-reminder")
-    public ResponseEntity<?> setReminder() {
-        return null;
+    public ResponseEntity<?> setReminder(
+            @RequestBody ReminderRequest request,
+            @AuthenticationPrincipal UserEntity currentUser) {
+
+        ReminderEntity reminder = userService.createReminder(
+                request.getNotes(),
+                request.getDueDateTime(),
+                currentUser
+        );
+
+        return ResponseEntity.ok(reminder);
     }
 
     @GetMapping("/reminders")
-    public ResponseEntity<?> getReminders() {
-        return null;
+    public ResponseEntity<?> getReminders(@AuthenticationPrincipal UserEntity currentUser) {
+        List<ReminderEntity> reminders = userService.getReminders(currentUser);
+        return ResponseEntity.ok(reminders);
     }
 
 }
