@@ -38,7 +38,8 @@ public class UserService {
 /*
 * Service for handling user's profilei info update
 * for and by authenticated users
-*   |  |
+* author: Augustine Alul 
+    |  |
 *  \    /
 *   \  /
 *    \/
@@ -82,7 +83,8 @@ public class UserService {
 /*
 * Service for handling change of passwords
 * for authenticated users
-*   |  |
+*  * author: Augustine Alul 
+    |  |
 *  \    /
 *   \  /
 *    \/
@@ -109,6 +111,39 @@ public void changePassword(ChangePasswordDTO passwordReq) {
         }
     }
 
+    /*
+    * Service method that enables password reset
+    * for authenticated users, by verifying their
+    * emails and sending them a reset link
+    * author: Augustine Alul
+    *      |  |
+    *     \    /
+    *      \  /
+    *       \/ 
+    */
+    public void resetPassword(PasswordResetDTO passwordResetDTO){
+         // validate for empty email
+        if (passwordResetDTO == null){
+          throw new IllegalArgumentException("email cannot be empty");
+       }
+        
+        // Get current user details
+        String email = SecurityContextHolder.getContext().getAuthentication().getName();
+        UserEntity user = userRepository
+                .findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found in DB"));
+      
+        // compare reset email sent by user to what is in the db
+        if (passwordResetDTO.email != user.getEmail()){
+           throw new Exception("unauthorized reset email provided");
+        }
+
+        // generate reser token,save in db and send reset link to user’s email addr
+        String resetToken = String.valueOf(LocalDateTime.now()) + UUID.getRandomUUID();
+    }
+    
+    
+    
     // Create a reminder for a user
     public ReminderEntity createReminder(String notes, LocalDateTime dueDateTime, UserEntity user) {
         ReminderEntity reminder = new ReminderEntity();
@@ -135,3 +170,4 @@ public void changePassword(ChangePasswordDTO passwordReq) {
     }
 
 }
+
