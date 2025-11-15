@@ -38,8 +38,9 @@ public class UserController {
     }
 
     @PutMapping("/reset-password")
-    public ResponseEntity<?> resetPassword() {
-        return null;
+    public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordDTO resetPasswordDTO) {
+       return ResponseEntity
+           .ok(userService.resetPassword(resetPasswordDTO));
     }
 
     @PostMapping("/chat-llm")
@@ -68,3 +69,4 @@ public class UserController {
     }
 
 }
+
