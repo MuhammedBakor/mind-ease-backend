@@ -139,7 +139,8 @@ public void changePassword(ChangePasswordDTO passwordReq) {
         }
 
         // generate reser token,save in db and send reset link to user’s email addr
-        String resetToken = String.valueOf(LocalDateTime.now()) + UUID.getRandomUUID();
+        String resetToken = UUID.randomUUID().toString();
+;
     }
     
     
@@ -170,4 +171,5 @@ public void changePassword(ChangePasswordDTO passwordReq) {
     }
 
 }
+
 
