@@ -64,6 +64,9 @@ public class UserEntity implements UserDetails {
         this.role = role;
     }
 
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private PasswordResetEntity passwordResetEntity;
+    
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(role));
@@ -73,4 +76,7 @@ public class UserEntity implements UserDetails {
     public String getUsername() {
         return  email;
     }
+
+    
 }
+
