@@ -154,7 +154,8 @@ public void changePassword(ChangePasswordDTO passwordReq) {
 
     passwordResetRepository.save(resetObject);
 
-    
+    // logic to send mail to user to reset
+    // their password..
 }
 
     
@@ -186,6 +187,7 @@ public void changePassword(ChangePasswordDTO passwordReq) {
     }
 
 }
+
 
 
 
