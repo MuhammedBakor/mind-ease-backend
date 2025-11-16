@@ -124,7 +124,7 @@ public void changePassword(ChangePasswordDTO passwordReq) {
     */
     
     @Transactional
-    public void resetPassword(PasswordResetDTO passwordResetDTO) {
+    public void resetPassword(ResetPasswordDTO resetPasswordDTO) {
 
     if (passwordResetDTO == null || passwordResetDTO.email() == null) {
         throw new IllegalArgumentException("Email cannot be empty");
@@ -139,14 +139,14 @@ public void changePassword(ChangePasswordDTO passwordReq) {
             .orElseThrow(() -> new RuntimeException("User not found in DB"));
 
     // Compare email from DTO to the authenticated user email
-    if (!passwordResetDTO.email().equals(user.getEmail())) {
+    if (!resetPasswordDTO.email().equals(user.getEmail())) {
         throw new RuntimeException("Unauthorized reset email provided");
     }
 
     // Generate random token
     String resetToken = UUID.randomUUID().toString();
 
-        resetObject = new PasswordResetEntity();
+      PasswordResetEntity resetObject = new PasswordResetEntity();
         resetObject.setUser(user);
     
 
@@ -187,6 +187,7 @@ public void changePassword(ChangePasswordDTO passwordReq) {
     }
 
 }
+
 
 
 
