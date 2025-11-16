@@ -110,6 +110,7 @@ public void changePassword(ChangePasswordDTO passwordReq) {
             throw new IllegalArgumentException("Enter correct old password");
         }
     }
+    
 
     /*
     * Service method that enables password reset
@@ -121,27 +122,41 @@ public void changePassword(ChangePasswordDTO passwordReq) {
     *      \  /
     *       \/ 
     */
-    public void resetPassword(PasswordResetDTO passwordResetDTO){
-         // validate for empty email
-        if (passwordResetDTO == null){
-          throw new IllegalArgumentException("email cannot be empty");
-       }
-        
-        // Get current user details
-        String email = SecurityContextHolder.getContext().getAuthentication().getName();
-        UserEntity user = userRepository
-                .findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found in DB"));
-      
-        // compare reset email sent by user to what is in the db
-        if (passwordResetDTO.email != user.getEmail()){
-           throw new Exception("unauthorized reset email provided");
-        }
+    
+    @Transactional
+    public void resetPassword(PasswordResetDTO passwordResetDTO) {
 
-        // generate reser token,save in db and send reset link to user’s email addr
-        String resetToken = UUID.randomUUID().toString();
-;
+    if (passwordResetDTO == null || passwordResetDTO.email() == null) {
+        throw new IllegalArgumentException("Email cannot be empty");
     }
+
+    // Get current authenticated user's email
+    String authenticatedEmail =
+            SecurityContextHolder.getContext().getAuthentication().getName();
+
+    UserEntity user = userRepository
+            .findByEmail(authenticatedEmail)
+            .orElseThrow(() -> new RuntimeException("User not found in DB"));
+
+    // Compare email from DTO to the authenticated user email
+    if (!passwordResetDTO.email().equals(user.getEmail())) {
+        throw new RuntimeException("Unauthorized reset email provided");
+    }
+
+    // Generate random token
+    String resetToken = UUID.randomUUID().toString();
+
+        resetObject = new PasswordResetEntity();
+        resetObject.setUser(user);
+    
+
+    resetObject.setResetToken(resetToken);
+
+    passwordResetRepository.save(resetObject);
+
+    
+}
+
     
     
     
@@ -171,5 +186,6 @@ public void changePassword(ChangePasswordDTO passwordReq) {
     }
 
 }
+
 
 
