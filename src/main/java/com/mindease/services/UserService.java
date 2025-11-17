@@ -2,12 +2,21 @@ package com.mindease.services;
 
 import com.mindease.DTO.ChangePasswordDTO;
 import com.mindease.DTO.UserDTO;
+import com.mindease.DTO.ResetPasswordDTO;
+
+import com.mindease.entities.PasswordResetEntity;
 import com.mindease.entities.ReminderEntity;
 import com.mindease.entities.UserEntity;
+
+import com.mindease.services.EmailService;
+
+import com.mindease.repositories.PasswordResetRepository;
 import com.mindease.repositories.ReminderRepository;
 import com.mindease.repositories.UserRepository;
+
 import jakarta.transaction.Transactional;
 import org.quartz.SchedulerException;
+
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -15,6 +24,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 
 @Service
@@ -22,7 +32,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
-
+    private final PasswordResetRepository passwordResetRepository;
     private final ReminderRepository reminderRepository;
     private final EmailService emailService;
     private final ReminderSchedulerService reminderSchedulerService;
@@ -33,6 +43,7 @@ public class UserService {
         this.reminderRepository = reminderRepository;
         this.emailService = emailService;
         this.reminderSchedulerService = reminderSchedulerService;
+        this.passwordResetRepository = passwordResetRepository;
     }
 
 /*
@@ -126,7 +137,7 @@ public void changePassword(ChangePasswordDTO passwordReq) {
     @Transactional
     public void resetPassword(ResetPasswordDTO resetPasswordDTO) {
 
-    if (passwordResetDTO == null || passwordResetDTO.email() == null) {
+    if (resetPasswordDTO == null || resetPasswordDTO.email() == null){
         throw new IllegalArgumentException("Email cannot be empty");
     }
 
@@ -156,6 +167,7 @@ public void changePassword(ChangePasswordDTO passwordReq) {
 
     // logic to send mail to user to reset
     // their password..
+    // this is still awaiting redirect url from frontend team
 }
 
     
@@ -187,6 +199,7 @@ public void changePassword(ChangePasswordDTO passwordReq) {
     }
 
 }
+
 
 
 
