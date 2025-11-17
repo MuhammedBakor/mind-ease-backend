@@ -1,5 +1,6 @@
 package com.mindease.controllers;
 
+import com.mindease.DTO.NewPasswordDTO;
 import com.mindease.DTO.ResetPasswordDTO;
 import com.mindease.DTO.ChangePasswordDTO;
 import com.mindease.entities.ReminderEntity;
@@ -40,9 +41,15 @@ public class UserController {
 
     @PutMapping("/reset-password")
     public ResponseEntity<?> resetPassword(@RequestBody ResetPasswordDTO resetPasswordDTO) {
-       ResponseEntity
+       return ResponseEntity
            .ok(userService.resetPassword(resetPasswordDTO));
     }
+
+    @PutMapping("/confirm-reset")
+    public ResponseEntity<?> confirmReset(@RequestBody NewPasswordDTO dto) {
+        return ResponseEntity.ok(userService.confirmPasswordReset(dto));
+    }
+
 
     @PostMapping("/chat-llm")
     public ResponseEntity<?> chatLlm() {

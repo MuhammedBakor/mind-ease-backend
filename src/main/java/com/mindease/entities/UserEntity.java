@@ -30,7 +30,6 @@ public class UserEntity implements UserDetails {
     @Column(nullable = false, unique = true)
     private String email;
 
-    @Column(nullable = false)
     private String schoolName;
 
     private String educationalLevel;
@@ -38,12 +37,10 @@ public class UserEntity implements UserDetails {
     @Column(nullable = false)
     private String password;
 
-    @Column(nullable = false)
     private String gender;
 
     private LocalDate date_of_birth;
 
-    @Column(nullable = false)
     private String role;
 
     public UserEntity(
@@ -64,8 +61,8 @@ public class UserEntity implements UserDetails {
         this.role = role;
     }
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
-    private PasswordResetEntity passwordResetEntity;
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<PasswordResetEntity> passwordResetEntities;
     
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -1,6 +1,7 @@
 package com.mindease.services;
 
 import com.mindease.DTO.ChangePasswordDTO;
+import com.mindease.DTO.NewPasswordDTO;
 import com.mindease.DTO.UserDTO;
 import com.mindease.DTO.ResetPasswordDTO;
 
@@ -37,7 +38,10 @@ public class UserService {
     private final EmailService emailService;
     private final ReminderSchedulerService reminderSchedulerService;
 
-    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder, ReminderRepository reminderRepository, EmailService emailService, ReminderSchedulerService reminderSchedulerService) {
+    public UserService(
+            UserRepository userRepository, PasswordEncoder passwordEncoder,
+            ReminderRepository reminderRepository, EmailService emailService,
+            ReminderSchedulerService reminderSchedulerService, PasswordResetRepository passwordResetRepository) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.reminderRepository = reminderRepository;
@@ -133,46 +137,76 @@ public void changePassword(ChangePasswordDTO passwordReq) {
     *      \  /
     *       \/ 
     */
-    
+
     @Transactional
-    public void resetPassword(ResetPasswordDTO resetPasswordDTO) {
+    public String resetPassword(ResetPasswordDTO resetPasswordDTO) {
 
-    if (resetPasswordDTO == null || resetPasswordDTO.email() == null){
-        throw new IllegalArgumentException("Email cannot be empty");
-    }
+        if (resetPasswordDTO == null || resetPasswordDTO.email() == null){
+            throw new IllegalArgumentException("Email cannot be empty");
+        }
 
-    // Get current authenticated user's email
-    String authenticatedEmail =
-            SecurityContextHolder.getContext().getAuthentication().getName();
+        // Get user from DB (reset requests can be done even if user is not logged in)
+        UserEntity user = userRepository
+                .findByEmail(resetPasswordDTO.email())
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-    UserEntity user = userRepository
-            .findByEmail(authenticatedEmail)
-            .orElseThrow(() -> new RuntimeException("User not found in DB"));
+        // Generate random token
+        String resetToken = UUID.randomUUID().toString();
 
-    // Compare email from DTO to the authenticated user email
-    if (!resetPasswordDTO.email().equals(user.getEmail())) {
-        throw new RuntimeException("Unauthorized reset email provided");
-    }
-
-    // Generate random token
-    String resetToken = UUID.randomUUID().toString();
-
-      PasswordResetEntity resetObject = new PasswordResetEntity();
+        // Save reset request
+        PasswordResetEntity resetObject = new PasswordResetEntity();
         resetObject.setUser(user);
-    
+        resetObject.setResetToken(resetToken);
+        resetObject.setCreatedAt(LocalDateTime.now());
+        resetObject.setUsed(false);
 
-    resetObject.setResetToken(resetToken);
+        passwordResetRepository.save(resetObject);
 
-    passwordResetRepository.save(resetObject);
+        // Build reset link
+        String link = resetPasswordDTO.redirectURL()
+                + "?token=" + resetToken;
 
-    // logic to send mail to user to reset
-    // their password..
-    // this is still awaiting redirect url from frontend team
-}
+        // Send Email
+        emailService.sendEmail(
+                user.getEmail(),
+                "🔐 Reset Your Password",
+                "Use the link below to reset your password:\n" + link
+        );
 
-    
-    
-    
+        return "Reset email sent successfully!";
+    }
+
+    @Transactional
+    public String confirmPasswordReset(NewPasswordDTO dto) {
+
+        PasswordResetEntity resetEntry = passwordResetRepository
+                .findByResetToken(dto.token())
+                .orElseThrow(() -> new RuntimeException("Invalid reset token"));
+
+        if (resetEntry.isUsed()) {
+            throw new RuntimeException("This reset link has already been used");
+        }
+
+
+        if (resetEntry.getCreatedAt().isBefore(LocalDateTime.now().minusMinutes(15))) {
+            throw new RuntimeException("Reset token expired");
+        }
+
+        UserEntity user = resetEntry.getUser();
+        user.setPassword(passwordEncoder.encode(dto.newPassword()));
+
+        userRepository.save(user);
+
+        resetEntry.setUsed(true);
+        passwordResetRepository.save(resetEntry);
+
+        return "Password updated successfully!";
+    }
+
+
+
+
+
     // Create a reminder for a user
     public ReminderEntity createReminder(String notes, LocalDateTime dueDateTime, UserEntity user) {
         ReminderEntity reminder = new ReminderEntity();
@@ -199,8 +233,6 @@ public void changePassword(ChangePasswordDTO passwordReq) {
     }
 
 }
-
-
 
 
 
