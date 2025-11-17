@@ -2,10 +2,12 @@ package com.mindease.requests;
 
 import jakarta.validation.constraints.*;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDate;
 
 @Getter
+@Setter
 public class UserRegistrationRequest {
 
     @NotBlank(message = "First name is required")

@@ -5,9 +5,9 @@ spring:
   application:
     name: "mindease"
   datasource:
-    url: jdbc:postgresql://localhost:5433/tech1_db
+    url: jdbc:postgresql://dpg-d4dkfl7pm1nc73dctj5g-a.oregon-postgres.render.com/mind_ease_db
     username: user
-    password: password
+    password: Op0s5EC68T77B3K5PQmkQNUsGQu9MqpJ
   jpa:
     hibernate:
       ddl-auto: update

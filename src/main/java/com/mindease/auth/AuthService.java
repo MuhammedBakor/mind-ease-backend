@@ -36,6 +36,9 @@ public class AuthService {
 
         String email = userToRegister.getEmail();
 
+        if (userToRegister.getRole() == null){
+            userToRegister.setRole("ROLE_USER");
+        }
         if (userRepository.existsByEmail(email)){
             throw new DuplicateResourceException("Email already exists");
         }
