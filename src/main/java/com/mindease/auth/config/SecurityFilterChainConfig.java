@@ -33,7 +33,6 @@ public class SecurityFilterChainConfig {
                                 "/api/v1/auth/**",
                                 "/api/v1/user/reset-password",
                                 "/api/v1/user/confirm-reset",
-                                "swagger-ui/**",
                                  "/swagger-ui.html",
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**"
@@ -46,5 +45,6 @@ public class SecurityFilterChainConfig {
         return http.build();
     }
 }
+
 
 
