@@ -32,7 +32,8 @@ public class SecurityFilterChainConfig {
                         .requestMatchers(
                                 "/api/v1/auth/**",
                                 "/api/v1/user/reset-password",
-                                "/api/v1/user/confirm-reset"
+                                "/api/v1/user/confirm-reset",
+                                "swagger-ui/**" 
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
@@ -42,3 +43,4 @@ public class SecurityFilterChainConfig {
         return http.build();
     }
 }
+
