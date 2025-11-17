@@ -20,7 +20,6 @@ public class UserRegistrationRequest {
     @Email(message = "Email format is invalid")
     private String email;
 
-    @NotBlank(message = "School Name is required")
     private String schoolName;
 
     private String educationalLevel;
@@ -29,13 +28,11 @@ public class UserRegistrationRequest {
     @Size(min = 6, max = 50, message = "Password must be between 6 and 50 characters")
     private String password;
 
-    @NotBlank(message = "Gender is required")
     private String gender;
 
     @Past(message = "Date of birth must be in the past")
     private LocalDate date_of_birth;
 
-    @NotBlank(message = "Role name is required")
     private String role;
 
     public UserRegistrationRequest() {}
