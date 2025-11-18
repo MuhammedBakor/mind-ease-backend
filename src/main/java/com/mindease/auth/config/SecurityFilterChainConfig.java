@@ -33,9 +33,10 @@ public class SecurityFilterChainConfig {
                                 "/api/v1/auth/**",
                                 "/api/v1/user/reset-password",
                                 "/api/v1/user/confirm-reset",
-                                 "/swagger-ui.html",
+                                "/v3/api-docs",
+                                "/v3/api-docs/**",
                                 "/swagger-ui/**",
-                                "/v3/api-docs/**"
+                                "/swagger-ui.html"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
