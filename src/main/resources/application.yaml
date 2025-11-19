@@ -38,3 +38,5 @@ spring:
             instanceName: MindEaseScheduler
           threadPool:
             threadCount: 5
+          jobStore:
+            driverDelegateClass: org.quartz.impl.jdbcjobstore.PostgreSQLDelegate
