@@ -39,7 +39,8 @@ public class SecurityFilterChainConfig {
                                 "/v3/api-docs",
                                 "/v3/api-docs/**",
                                 "/swagger-ui/**",
-                                "/swagger-ui.html"
+                                "/swagger-ui.html",
+                                "/api/v1/user/chat-llm"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )

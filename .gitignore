@@ -41,3 +41,10 @@ build/
 
 ### VS Code ###
 .vscode/
+
+
+### Maven ###
+mvn/wrapper/maven-wrapper.jar
+mvnw
+mvnw.cmd
+.mvn
