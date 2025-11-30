@@ -1,16 +1,16 @@
-﻿# 🧠 MindEase Backend
+﻿# MindEase Backend
 
 **MindEase** is the backend service powering a web-based mental health and productivity platform designed specifically for students.  
 It provides secure APIs for stress management, time scheduling, AI chatbot support, and sleep improvement tools — all optimized for seamless integration with the frontend (React.js).
 
 ---
 
-## 📋 Overview
+## Overview
 
 The backend of **MindEase** is built with **Java Spring Boot**, designed for scalability, modularity, and performance.  
 It handles the business logic, authentication, API management, AI communication, and database operations.
 
-### 🎯 Core Responsibilities
+### Core Responsibilities
 - Manage user authentication and authorization.
 - Handle scheduling and reminder features (including email notifications).
 - Store and retrieve user progress, sleep tracking, and activity logs.
@@ -19,7 +19,7 @@ It handles the business logic, authentication, API management, AI communication,
 
 ---
 
-## 🏗️ Architecture
+##  Architecture
 
 ```text
 Frontend (e.g React.js)
@@ -31,7 +31,7 @@ Database (PostgreSQL)
 External APIs (AI, YouTube)
 ```
 
-### 🧩 Components
+### Components
 
 | Component | Technology | Description |
 |------------|-------------|--------------|
@@ -45,7 +45,7 @@ External APIs (AI, YouTube)
 
 ---
 
-## 🔐 Authentication & Security
+## Authentication & Security
 
 - **JWT-based Authentication** for stateless session management.  
 - **Password Encryption** using BCrypt for user credentials.  
@@ -54,7 +54,7 @@ External APIs (AI, YouTube)
 
 ---
 
-## 📦 API Endpoints (Examples)
+## API Endpoints (Examples)
 
 | Endpoint                   | Method | Description |
 |----------------------------|--------|-------------|
@@ -71,7 +71,7 @@ External APIs (AI, YouTube)
 
 ---
 
-## 🧠 AI Chatbot Integration
+## AI Chatbot Integration
 
 - The backend connects to an **LLM API (e.g., GPT)** to generate context-aware and empathetic responses.
 - Each session maintains minimal contextual history to allow personalized guidance.
@@ -79,7 +79,7 @@ External APIs (AI, YouTube)
 
 ---
 
-## 🗄️ Database Schema (Simplified)
+## Database Schema (Simplified)
 
 | Table | Purpose |
 |--------|----------|
@@ -91,11 +91,11 @@ External APIs (AI, YouTube)
 
 ---
 
-## ⚙️ Setup & Installation
+## Setup & Installation
 
 ### 1. Clone the Repository
 
-## 🚀 How to Run
+## How to Run
 
 ---
 1. Clone the repository
@@ -115,7 +115,7 @@ External APIs (AI, YouTube)
 
 ### 4. Test endpoints via Postman.
 
-# 🧰 Development Tools
+# Development Tools
 ### Java 21+
 ### Spring Boot 3.x
 ### PostgreSQL
@@ -125,7 +125,7 @@ External APIs (AI, YouTube)
 
 ___
 
-# 🤝 Contributors
+# Contributors
 
 ## Backend Team (Mohammad Bakur Ibrahim, Augustine Alul)– responsible for:
 
@@ -134,5 +134,6 @@ ___
 - AI integration
 - Database schema & optimization
 - Email & notification services
+
 
 
