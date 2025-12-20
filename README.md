@@ -3,8 +3,14 @@
 **MindEase** is the backend service powering a web-based mental health and productivity platform designed specifically for students.  
 It provides secure APIs for stress management, time scheduling, AI chatbot support, and sleep improvement tools — all optimized for seamless integration with the frontend (React.js).
 
-This backed deployed link:
+This is the backed deployed link:
 https://mind-ease-backend-f68j.onrender.com
+
+This is the backed swagger ui link:
+https://mind-ease-backend-f68j.onrender.com/swagger-ui.html
+
+This is the backed doc link:
+https://mind-ease-backend-f68j.onrender.com/v3/api-docs
 
 
 The final team full stack MindEase project link:
@@ -141,6 +147,7 @@ ___
 - AI integration
 - Database schema & optimization
 - Email & notification services
+
 
 
 
